@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ellawynn Sian — Engineering & Planetary Science</title>
+<title>Ellawynn Sian</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -38,7 +38,6 @@
     overflow-x: hidden;
   }
 
-  /* ─── STAR CANVAS ─── */
   #star-canvas {
     position: fixed;
     inset: 0;
@@ -46,7 +45,6 @@
     z-index: 0;
   }
 
-  /* ─── NAV ─── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -85,7 +83,6 @@
 
   .nav-links a:hover { color: var(--text); }
 
-  /* ─── HERO ─── */
   .hero {
     position: relative;
     z-index: 1;
@@ -179,7 +176,7 @@
     transform: translateY(-1px);
   }
 
-  /* ─── PLANET ORBIT DECORATION ─── */
+
   .orbit-ring {
     position: absolute;
     border-radius: 50%;
@@ -194,7 +191,6 @@
     animation: orbit 20s linear infinite;
   }
 
-  /* ─── SECTION WRAPPER ─── */
   section {
     position: relative;
     z-index: 1;
@@ -206,7 +202,6 @@
     padding: 0 2rem;
   }
 
-  /* ─── SECTION HEADER ─── */
   .section-label {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -232,7 +227,6 @@
     font-size: 1rem;
   }
 
-  /* ─── ABOUT ─── */
   .about {
     padding: 8rem 0;
   }
@@ -291,7 +285,6 @@
     opacity: 0.6;
   }
 
-  /* ─── STATS ROW ─── */
   .stats-row {
     display: flex;
     flex-direction: column;
@@ -322,7 +315,6 @@
     font-weight: 300;
   }
 
-  /* ─── PLANET DIVIDER ─── */
   .planet-divider {
     display: flex;
     align-items: center;
@@ -345,7 +337,6 @@
     flex-shrink: 0;
   }
 
-  /* ─── SKILLS / DOMAINS ─── */
   .domains {
     padding: 5rem 0 8rem;
   }
@@ -412,7 +403,6 @@
     color: var(--accent);
   }
 
-  /* ─── PROJECTS ─── */
   .projects {
     padding: 5rem 0 8rem;
   }
@@ -492,8 +482,7 @@
     color: var(--accent);
     transform: translateX(3px);
   }
-
-  /* ─── TIMELINE ─── */
+  
   .timeline {
     padding: 5rem 0 8rem;
   }
@@ -573,7 +562,7 @@
     line-height: 1.6;
   }
 
-  /* ─── CONTACT ─── */
+
   .contact {
     padding: 6rem 0 8rem;
     text-align: center;
@@ -630,7 +619,6 @@
     border-color: var(--accent);
   }
 
-  /* ─── FOOTER ─── */
   footer {
     position: relative;
     z-index: 1;
@@ -740,9 +728,9 @@
     <div class="hero-planet" style="width:6px;height:6px;background:#6ee7b7;top:214px;left:214px;box-shadow:0 0 5px #6ee7b7;animation:orbit3 45s linear infinite;"></div>
   </div>
 
-  <p class="hero-eyebrow">Computer + Geological Engineer &nbsp;·&nbsp; Planetary Enthusiast</p>
-  <h1 class="hero-name">Your<br><em>Name</em></h1>
-  <p class="hero-tagline">Bridging circuits and crust — building tools for the Earth and the worlds beyond it.</p>
+  <p class="hero-eyebrow">Computer Engineer</p>
+  <h1 class="hero-name">Ellawynn<br><em>Sian</em></h1>
+  <!-- <p class="hero-tagline">Bridging circuits and crust — building tools for the Earth and the worlds beyond it.</p> -->
   <div class="hero-cta">
     <a href="#projects" class="btn btn-primary">View Projects</a>
     <a href="#contact" class="btn btn-ghost">Get in Touch</a>
@@ -753,21 +741,23 @@
 <section id="about" class="about">
   <div class="container fade-in-section">
     <p class="section-label">01 — About</p>
-    <h2 class="section-title">Orbiting multiple<br>disciplines at once.</h2>
+    <h2 class="section-title">Intrests and Hobbies</h2>
     <div class="about-grid">
       <div class="about-body">
         <p>I'm a <strong>Computer Engineering student</strong> currently considering a pivot into <strong>Geological Engineering</strong> — because rocks and circuits have more in common than you'd think. Both are systems that follow rules, break in interesting ways, and reward careful observation.</p>
-        <p>My academic path has led me toward <strong>robotics and embedded systems</strong>, where I love the challenge of making physical hardware respond intelligently to the world. I'm equally drawn to <strong>GIS, mapping, and visual statistics</strong> — translating complex spatial data into something humans can actually understand.</p>
-        <p>When I'm not at a desk, I'm outdoors — hiking, reading terrain, watching for wildlife. That connection to the physical world is what originally sparked my passion for <strong>planetary science and astronomy</strong>: if I love Earth this much, imagine the others.</p>
+        <p>My academic path has led me toward <strong>robotics and embedded systems</strong>, where I love the challenge of making physical hardware respond intelligently to the world. I'm equally drawn to <strong>GIS, mapping, and visual statistics</strong> — translating numbers into a visual representation.</p>
+        <p>When I'm not studying, I'm outdoors hiking, running, and watching for wildlife. That connection to the physical world is what originally sparked my passion for <strong>planetary science and astronomy</strong>.</p>
         <div class="interest-chips">
-          <span class="chip"><span class="chip-dot"></span>Embedded Systems</span>
           <span class="chip"><span class="chip-dot"></span>Robotics</span>
+          <span class="chip"><span class="chip-dot"></span>Embedded Systems</span>
           <span class="chip"><span class="chip-dot"></span>GIS & Mapping</span>
           <span class="chip"><span class="chip-dot"></span>Planetary Science</span>
           <span class="chip"><span class="chip-dot"></span>Geology</span>
           <span class="chip"><span class="chip-dot"></span>Visual Stats</span>
           <span class="chip"><span class="chip-dot"></span>Astronomy</span>
           <span class="chip"><span class="chip-dot"></span>Hiking</span>
+          <span class="chip"><span class="chip-dot"></span>Running</span>
+          <span class="chip"><span class="chip-dot"></span>Ballet</span>
           <span class="chip"><span class="chip-dot"></span>Wildlife</span>
         </div>
       </div>
