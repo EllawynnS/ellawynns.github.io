@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellawynn Sian — Engineering & Planetary Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #080c14;
+    --bg2: #0d1320;
+    --bg3: #111827;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #f0f2f8;
+    --muted: #8892a4;
+    --dim: #4a5568;
+    --accent: #7eb8f7;
+    --accent2: #a78bfa;
+    --accent3: #6ee7b7;
+    --accent4: #fbbf24;
+    --glow: rgba(126,184,247,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── STAR CANVAS ─── */
+  #star-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(8,12,20,0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-tagline {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 480px;
+    font-weight: 300;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #080c14;
+  }
+
+  .btn-primary:hover {
+    background: #a5ccf9;
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 0.5px solid var(--border2);
+  }
+
+  .btn-ghost:hover {
+    background: var(--surface);
+    transform: translateY(-1px);
+  }
+
+  /* ─── PLANET ORBIT DECORATION ─── */
+  .orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    pointer-events: none;
+  }
+
+  .hero-planet {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orbit 20s linear infinite;
+  }
+
+  /* ─── SECTION WRAPPER ─── */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 520px;
+    font-size: 1rem;
+  }
+
+  /* ─── ABOUT ─── */
+  .about {
+    padding: 8rem 0;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+    margin-top: 4rem;
+  }
+
+  .about-body p {
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .about-body p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .interest-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 0.5px solid var(--border2);
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    transition: all 0.2s;
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .chip-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  /* ─── STATS ROW ─── */
+  .stats-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem;
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--border2); }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ─── PLANET DIVIDER ─── */
+  .planet-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    gap: 1.5rem;
+    overflow: hidden;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 0.5px;
+    background: linear-gradient(to right, transparent, var(--border2), transparent);
+  }
+
+  .divider-planet {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── SKILLS / DOMAINS ─── */
+  .domains {
+    padding: 5rem 0 8rem;
+  }
+
+  .domains-header {
+    margin-bottom: 4rem;
+  }
+
+  .domain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .domain-card {
+    background: var(--bg2);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .domain-card:hover { background: var(--bg3); }
+
+  .domain-icon {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .domain-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .domain-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .domain-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: rgba(126,184,247,0.1);
+    color: var(--accent);
+  }
+
+  /* ─── PROJECTS ─── */
+  .projects {
+    padding: 5rem 0 8rem;
+  }
+
+  .projects-header {
+    margin-bottom: 4rem;
+  }
+
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    padding: 2rem 2.5rem;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.2s;
+    gap: 2rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-item:last-child { border-bottom: none; }
+  .project-item:hover { background: var(--surface); }
+
+  .project-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .project-arrow {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .arrow-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .project-item:hover .arrow-circle {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    padding: 5rem 0 8rem;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    margin-top: 4rem;
+  }
+
+  .timeline-nav {
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .timeline-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    color: var(--dim);
+    font-size: 13px;
+    transition: color 0.2s;
+    border-left: 2px solid var(--border);
+    padding-left: 1.25rem;
+  }
+
+  .timeline-nav-item.active {
+    border-left-color: var(--accent);
+    color: var(--text);
+  }
+
+  .timeline-events {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .event-card {
+    padding: 2rem;
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+
+  .event-card:hover { border-color: var(--border2); }
+
+  .event-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+
+  .event-place {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .event-desc {
+    font-size: 13px;
+    color: var(--dim);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ─── CONTACT ─── */
+  .contact {
+    padding: 6rem 0 8rem;
+    text-align: center;
+  }
+
+  .contact-card {
+    display: inline-block;
+    padding: 4rem 5rem;
+    border: 0.5px solid var(--border);
+    border-radius: 24px;
+    background: var(--surface);
+    max-width: 640px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--glow);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.4rem;
+    border: 0.5px solid var(--border2);
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 3rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-coords {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(220px) rotate(-360deg); }
+  }
+
+  @keyframes orbit2 {
+    from { transform: rotate(60deg) translateX(340px) rotate(-60deg); }
+    to   { transform: rotate(420deg) translateX(340px) rotate(-420deg); }
+  }
+
+  @keyframes orbit3 {
+    from { transform: rotate(180deg) translateX(480px) rotate(-180deg); }
+    to   { transform: rotate(540deg) translateX(480px) rotate(-540deg); }
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-in-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .domain-grid { grid-template-columns: 1fr; gap: 1px; }
+    .timeline-grid { grid-template-columns: 1fr; }
+    .timeline-nav { display: none; }
+    .project-item { grid-template-columns: 1fr; }
+    .project-arrow { display: none; }
+    .contact-card { padding: 2.5rem 2rem; }
+    footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Star canvas -->
+<canvas id="star-canvas"></canvas>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">YN.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#domains">Interests</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <!-- Orbiting rings (decorative) -->
+  <div style="position:absolute;width:440px;height:440px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;">
+    <div class="orbit-ring" style="width:440px;height:440px;top:0;left:0;animation:pulseSlow 4s ease infinite;"></div>
+    <div class="orbit-ring" style="width:680px;height:680px;top:-120px;left:-120px;opacity:0.4;"></div>
+    <div class="orbit-ring" style="width:960px;height:960px;top:-260px;left:-260px;opacity:0.2;"></div>
+
+    <!-- Planet 1 -->
+    <div class="hero-planet" style="width:12px;height:12px;background:#7eb8f7;top:214px;left:214px;box-shadow:0 0 8px #7eb8f7;animation-duration:18s;"></div>
+    <!-- Planet 2 -->
+    <div class="hero-planet" style="width:8px;height:8px;background:#a78bfa;top:214px;left:214px;box-shadow:0 0 6px #a78bfa;animation:orbit2 30s linear infinite;"></div>
+    <!-- Planet 3 -->
+    <div class="hero-planet" style="width:6px;height:6px;background:#6ee7b7;top:214px;left:214px;box-shadow:0 0 5px #6ee7b7;animation:orbit3 45s linear infinite;"></div>
+  </div>
+
+  <p class="hero-eyebrow">Computer + Geological Engineer &nbsp;·&nbsp; Planetary Enthusiast</p>
+  <h1 class="hero-name">Your<br><em>Name</em></h1>
+  <p class="hero-tagline">Bridging circuits and crust — building tools for the Earth and the worlds beyond it.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="about">
+  <div class="container fade-in-section">
+    <p class="section-label">01 — About</p>
+    <h2 class="section-title">Orbiting multiple<br>disciplines at once.</h2>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>I'm a <strong>Computer Engineering student</strong> currently considering a pivot into <strong>Geological Engineering</strong> — because rocks and circuits have more in common than you'd think. Both are systems that follow rules, break in interesting ways, and reward careful observation.</p>
+        <p>My academic path has led me toward <strong>robotics and embedded systems</strong>, where I love the challenge of making physical hardware respond intelligently to the world. I'm equally drawn to <strong>GIS, mapping, and visual statistics</strong> — translating complex spatial data into something humans can actually understand.</p>
+        <p>When I'm not at a desk, I'm outdoors — hiking, reading terrain, watching for wildlife. That connection to the physical world is what originally sparked my passion for <strong>planetary science and astronomy</strong>: if I love Earth this much, imagine the others.</p>
+        <div class="interest-chips">
+          <span class="chip"><span class="chip-dot"></span>Embedded Systems</span>
+          <span class="chip"><span class="chip-dot"></span>Robotics</span>
+          <span class="chip"><span class="chip-dot"></span>GIS & Mapping</span>
+          <span class="chip"><span class="chip-dot"></span>Planetary Science</span>
+          <span class="chip"><span class="chip-dot"></span>Geology</span>
+          <span class="chip"><span class="chip-dot"></span>Visual Stats</span>
+          <span class="chip"><span class="chip-dot"></span>Astronomy</span>
+          <span class="chip"><span class="chip-dot"></span>Hiking</span>
+          <span class="chip"><span class="chip-dot"></span>Wildlife</span>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Years of embedded systems & hardware projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Planets left to study</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">48+</div>
+          <div class="stat-label">Peaks, trails, and field sites visited</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Planet divider -->
+<div class="planet-divider">
+  <div class="divider-line"></div>
+  <svg class="divider-planet" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="24" r="14" fill="#1a2744" stroke="#7eb8f7" stroke-width="0.5"/>
+    <ellipse cx="24" cy="24" rx="23" ry="6" stroke="#7eb8f7" stroke-width="0.5" fill="none" opacity="0.5"/>
+    <circle cx="20" cy="20" r="3" fill="#2a3d6e" opacity="0.6"/>
+    <circle cx="28" cy="27" r="2" fill="#2a3d6e" opacity="0.4"/>
+  </svg>
+  <div class="divider-line"></div>
+</div>
+
+<!-- Domains / Skills -->
+<section id="domains" class="domains">
+  <div class="container fade-in-section">
+    <div class="domains-header">
+      <p class="section-label">02 — Interests & Skills</p>
+      <h2 class="section-title">Where my worlds<br>intersect.</h2>
+    </div>
+    <div class="domain-grid">
+      <div class="domain-card">
+        <div class="domain-icon">🛰️</div>
+        <div class="domain-name">Planetary Science & Astronomy</div>
+        <div class="domain-desc">Remote sensing, orbital mechanics, terrain analysis. Applying geological reasoning to other worlds — Mars, the Moon, and beyond.</div>
+        <div class="domain-tags">
+          <span class="tag">Remote Sensing</span>
+          <span class="tag">Orbital Mechanics</span>
+          <span class="tag">Spectroscopy</span>
+        </div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-icon">🤖</div>
+        <div class="domain-name">Robotics & Embedded Systems</div>
+        <div class="domain-desc">Microcontrollers, sensor integration, real-time control. Building systems that sense, decide, and act — from rovers to field instruments.</div>
+        <div class="domain-tags">
+          <span class="tag">C / C++</span>
+          <span class="tag">RTOS</span>
+          <span class="tag">Arduino / RPi</span>
+        </div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-icon">🗺️</div>
+        <div class="domain-name">GIS & Visual Statistics</div>
+        <div class="domain-desc">Spatial data analysis, cartographic design, interactive maps. Turning raw geodata into legible, compelling visual stories.</div>
+        <div class="domain-tags">
+          <span class="tag">QGIS / ArcGIS</span>
+          <span class="tag">Python</span>
+          <span class="tag">D3.js</span>
+        </div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-icon">⛰️</div>
+        <div class="domain-name">Geological Engineering</div>
+        <div class="domain-desc">Rock mechanics, stratigraphy, subsurface modelling. Understanding the materials underfoot — and using that knowledge to engineer safely with them.</div>
+        <div class="domain-tags">
+          <span class="tag">Stratigraphy</span>
+          <span class="tag">Rock Mechanics</span>
+          <span class="tag">Geohazards</span>
+        </div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-icon">💻</div>
+        <div class="domain-name">Computer Engineering</div>
+        <div class="domain-desc">Digital circuits, computer architecture, software systems. The bedrock of everything else — understanding machines from silicon up.</div>
+        <div class="domain-tags">
+          <span class="tag">VHDL / Verilog</span>
+          <span class="tag">Python</span>
+          <span class="tag">Linux</span>
+        </div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-icon">🌿</div>
+        <div class="domain-name">The Outdoors</div>
+        <div class="domain-desc">Hiking, field work, wildlife observation. The best lab is outside — and the best problems come from actually being in the terrain you're studying.</div>
+        <div class="domain-tags">
+          <span class="tag">BC Backcountry</span>
+          <span class="tag">Field Notes</span>
+          <span class="tag">Wildlife ID</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects" class="projects">
+  <div class="container fade-in-section">
+    <div class="projects-header">
+      <p class="section-label">03 — Projects</p>
+      <h2 class="section-title">Things I've built<br>and explored.</h2>
+      <p class="section-sub">A selection of work across hardware, software, and spatial data.</p>
+    </div>
+    <div class="project-list">
+      <a href="#" class="project-item">
+        <div>
+          <div class="project-meta">Robotics · 2024</div>
+          <div class="project-title">Autonomous Terrain Rover</div>
+          <div class="project-desc">A low-cost autonomous robot designed for geological field surveys — obstacle avoidance, GPS waypointing, and onboard sensor logging.</div>
+        </div>
+        <div class="project-arrow"><div class="arrow-circle">→</div></div>
+      </a>
+      <a href="#" class="project-item">
+        <div>
+          <div class="project-meta">GIS · 2024</div>
+          <div class="project-title">Landslide Risk Mapping, BC Interior</div>
+          <div class="project-desc">Spatial analysis pipeline combining DEM data, slope angle, and precipitation records to model landslide susceptibility across terrain.</div>
+        </div>
+        <div class="project-arrow"><div class="arrow-circle">→</div></div>
+      </a>
+      <a href="#" class="project-item">
+        <div>
+          <div class="project-meta">Astronomy · 2023</div>
+          <div class="project-title">Mars Crater Morphology Classifier</div>
+          <div class="project-desc">Python pipeline using HiRISE imagery to classify impact crater shapes — exploring how erosion differs between Earth and Mars climates.</div>
+        </div>
+        <div class="project-arrow"><div class="arrow-circle">→</div></div>
+      </a>
+      <a href="#" class="project-item">
+        <div>
+          <div class="project-meta">Embedded Systems · 2023</div>
+          <div class="project-title">Seismic Event Logger</div>
+          <div class="project-desc">Raspberry Pi based MEMS accelerometer array for low-cost microseismic monitoring — real-time FFT analysis and SD card logging.</div>
+        </div>
+        <div class="project-arrow"><div class="arrow-circle">→</div></div>
+      </a>
+      <a href="#" class="project-item">
+        <div>
+          <div class="project-meta">Data Viz · 2023</div>
+          <div class="project-title">Exoplanet Habitability Dashboard</div>
+          <div class="project-desc">Interactive D3.js visualization of NASA exoplanet data — plotting stellar distance, radius, and equilibrium temperature to identify candidates.</div>
+        </div>
+        <div class="project-arrow"><div class="arrow-circle">→</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Experience / Timeline -->
+<section id="experience" class="timeline">
+  <div class="container fade-in-section">
+    <p class="section-label">04 — Experience</p>
+    <h2 class="section-title">The trajectory<br>so far.</h2>
+    <div class="timeline-grid">
+      <div class="timeline-nav">
+        <div class="timeline-nav-item active">Education</div>
+        <div class="timeline-nav-item" style="margin-top:0.5rem;">Research</div>
+        <div class="timeline-nav-item" style="margin-top:0.5rem;">Extracurricular</div>
+      </div>
+      <div class="timeline-events">
+        <div class="event-card">
+          <div class="event-year">2022 — Present</div>
+          <div class="event-title">B.Sc. Computer Engineering</div>
+          <div class="event-place">University of British Columbia (or your university)</div>
+          <div class="event-desc">Coursework in digital systems, computer architecture, embedded programming, and signal processing. Considering transfer to Geological Engineering program.</div>
+        </div>
+        <div class="event-card">
+          <div class="event-year">Summer 2024</div>
+          <div class="event-title">Research Assistant — Geomatics Lab</div>
+          <div class="event-place">Department of Geography</div>
+          <div class="event-desc">Processed LiDAR point cloud data for slope stability analysis. Developed Python scripts to automate DEM generation and contour extraction workflows.</div>
+        </div>
+        <div class="event-card">
+          <div class="event-year">2023 — Present</div>
+          <div class="event-title">UBC Rover Design Team</div>
+          <div class="event-place">Student Engineering Society</div>
+          <div class="event-desc">Embedded systems sub-team. Responsible for microcontroller firmware and sensor integration on the team's Mars Rover competition vehicle.</div>
+        </div>
+        <div class="event-card">
+          <div class="event-year">2023</div>
+          <div class="event-title">Astronomy Club — Outreach Lead</div>
+          <div class="event-place">Campus Astronomy Society</div>
+          <div class="event-desc">Organised public stargazing events and wrote accessible explainers on planetary science topics for club social media reaching 2,000+ followers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Planet divider 2 -->
+<div class="planet-divider">
+  <div class="divider-line"></div>
+  <svg viewBox="0 0 48 48" fill="none" width="40" height="40">
+    <circle cx="24" cy="24" r="10" fill="#1e1040" stroke="#a78bfa" stroke-width="0.5"/>
+    <circle cx="20" cy="21" r="2.5" fill="#2d1a6b" opacity="0.7"/>
+    <ellipse cx="24" cy="24" rx="22" ry="5" stroke="#a78bfa" stroke-width="0.5" fill="none" opacity="0.4"/>
+  </svg>
+  <div class="divider-line"></div>
+</div>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <div class="container fade-in-section">
+    <div class="contact-card">
+      <div class="contact-glow"></div>
+      <p class="section-label" style="text-align:center;">05 — Contact</p>
+      <h2 class="section-title" style="font-size:clamp(1.75rem,3.5vw,2.75rem);margin-bottom:0.75rem;">Let's explore<br>something together.</h2>
+      <p style="color:var(--muted);font-size:0.95rem;font-weight:300;max-width:380px;margin:0 auto;">Whether it's a project, a question about geology vs. engineering, or just a good trail recommendation — reach out.</p>
+      <div class="contact-links">
+        <a href="mailto:your@email.com" class="contact-link">✉ Email</a>
+        <a href="https://github.com/yourusername" class="contact-link">⌥ GitHub</a>
+        <a href="https://linkedin.com/in/yourname" class="contact-link">◈ LinkedIn</a>
+        <a href="your-resume.pdf" class="contact-link">↓ Résumé</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span class="footer-left">© 2025 Your Name · Built with curiosity</span>
+  <span class="footer-coords">49.2827° N, 123.1207° W · Vancouver, BC</span>
+</footer>
+
+<!-- Scripts -->
+<script>
+// ─── STAR FIELD ───
+const canvas = document.getElementById('star-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let w, h;
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  const count = Math.floor((w * h) / 4000);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.4 + 0.2,
+      alpha: Math.random() * 0.7 + 0.1,
+      speed: Math.random() * 0.004 + 0.001,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+let frame = 0;
+function drawStars() {
+  ctx.clearRect(0, 0, w, h);
+  frame++;
+  for (const s of stars) {
+    const twinkle = s.alpha * (0.6 + 0.4 * Math.sin(frame * s.speed + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(200,215,255,${twinkle})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ─── SCROLL FADE ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
