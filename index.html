@@ -14,7 +14,7 @@
 <canvas id="star-canvas"></canvas>
 
 <nav>
-  <a href="#" class="nav-logo">YN.DEV</a>
+  <a href="#" class="nav-logo">Ellawynn Sian</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#domains">Interests</a></li>
@@ -33,7 +33,7 @@
     <div class="hero-planet" style="width:8px;height:8px;background:#a78bfa;top:214px;left:214px;box-shadow:0 0 6px #a78bfa;animation:orbit2 30s linear infinite;"></div>
     <div class="hero-planet" style="width:6px;height:6px;background:#6ee7b7;top:214px;left:214px;box-shadow:0 0 5px #6ee7b7;animation:orbit3 45s linear infinite;"></div>
   </div>
-  <p class="hero-eyebrow">Computer Engineer &nbsp</p>
+  <p class="hero-eyebrow">Computer Engineering Student at UBC &nbsp</p>
   <h1 class="hero-name">Ellawynn<br><em>Sian</em></h1>
   <!-- <p class="hero-tagline">Bridging circuits and crust — building tools for the Earth and the worlds beyond it.</p> -->
   <div class="hero-cta">
@@ -44,30 +44,23 @@
 
 <section id="about" class="about">
   <div class="container fade-in-section">
-    <p class="section-label">01 — About</p>
-    <h2 class="section-title">Orbiting multiple<br>disciplines at once.</h2>
     <div class="about-grid">
-      <div class="about-body">
-        <p>I'm a <strong>Computer Engineering student</strong> currently considering a pivot into <strong>Geological Engineering</strong> — because rocks and circuits have more in common than you'd think. Both are systems that follow rules, break in interesting ways, and reward careful observation.</p>
-        <p>My academic path has led me toward <strong>robotics and embedded systems</strong>, where I love the challenge of making physical hardware respond intelligently to the world. I'm equally drawn to visual representation of complex numbers and topics in fields such as <strong>GIS, cartography, and visual statistics</strong></p>
-        <p>When I'm not at school, I'm exploring the world by hiking, running, dancing, traveling and watching for wildlife. My love for exploration and the unknown is what originally sparked my passion for <strong>pysical geography, planetary science and astronomy</strong>.</p>
-        
-        <!--
-        <div class="interest-chips">
-          <span class="chip"><span class="chip-dot"></span>Embedded Systems</span>
-          <span class="chip"><span class="chip-dot"></span>Robotics</span>
-          <span class="chip"><span class="chip-dot"></span>GIS &amp; Mapping</span>
-          <span class="chip"><span class="chip-dot"></span>Planetary Science</span>
-          <span class="chip"><span class="chip-dot"></span>Geology</span>
-          <span class="chip"><span class="chip-dot"></span>Visual Stats</span>
-          <span class="chip"><span class="chip-dot"></span>Astronomy</span>
-          <span class="chip"><span class="chip-dot"></span>Hiking</span>
-          <span class="chip"><span class="chip-dot"></span>Photography</span>
-          <span class="chip"><span class="chip-dot"></span>Wildlife</span>
+      <div class="about-left">
+        <p class="section-label">01 — About</p>
+        <h2 class="section-title">Orbiting multiple<br>disciplines at once.</h2>
+        <div class="about-body">
+            <p>I'm a <strong>Computer Engineering student</strong> pursuing coursework toward a minor in <strong>Geographical Sciences</strong>. I am specializing at the intersection of embedded hardware, robotics, and spatial technology. My interests focuses on building resilient systems that operate in complex physical environments. </p>
+            
+            <p>My core academic focus area:</p>
+            <ul>
+              <li><strong>Space Robotics & Embedded Systems:</strong> Designing real-time, low-level software and hardware for satellites, planetary probes, and rovers.</li>
+              <li><strong>AI & Earth Observation:</strong> Applying machine learning models, GIS, and spatial analysis to physical geography problems, including natural disaster risk assessment and environmental monitoring.</li>
+            </ul>
+            
+            <p>When I'm not at school, I'm exploring the world by hiking, running, dancing, traveling and watching for wildlife. My love for exploration and the unknown is what originally sparked my passion for <strong>engineering, physical geography, planetary science and astronomy</strong>.</p>
+            
         </div>
-        -->
       </div>
-
       <div class="photo-stack">
         <div class="photo-card photo-wide" style="aspect-ratio:16/7;">
           <img src="resources/elfin_lakes.jpeg" alt="Elfin Lakes">
@@ -79,7 +72,7 @@
           <div class="photo-border-glow"></div>
         </div>
         <div class="photo-row2">
-          <div class="photo-card">
+          <div class="photo-card" style="aspect-ratio:1/1;">
             <img src="resources/northern_lights.jpg" alt="Northern Lights in Burnaby, BC">
             <div class="photo-overlay">
               <div class="photo-tag">Astrophotography · Burnaby, BC</div>
@@ -88,7 +81,7 @@
             </div>
             <div class="photo-border-glow"></div>
           </div>
-          <div class="photo-card">
+          <div class="photo-card" style="aspect-ratio:1/1;">
             <img src="resources/wct.jpg" alt="WCT">
             <div class="photo-overlay">
               <div class="photo-tag">Landscape Photography · West Coast Trail</div>
@@ -98,8 +91,8 @@
             <div class="photo-border-glow"></div>
           </div>
         </div>
-        <div class="photo-card">
-          <img src="resources/moon.jpg" alt="Moon">
+        <div class="photo-card"  style="aspect-ratio:16/10;">
+          <img src="resources/moon.jpeg" alt="Moon">
           <div class="photo-overlay">
             <div class="photo-tag">Astrophotography · Moon</div>
             <div class="photo-title">Close up of the moon</div>
@@ -323,7 +316,9 @@
   <span class="footer-coords">49.2488° N, 122.9805° W · Burnaby, BC</span>
 </footer>
  
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+<script>
   const canvas = document.getElementById('star-canvas');
   const ctx = canvas.getContext('2d');
   let stars = [], w, h;
@@ -367,5 +362,20 @@
   drawStars();
   window.addEventListener('resize', () => { resize(); initStars(); });
  
+  const observerOptions = {
+    threshold: 0.1
+  };  
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible')
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  // Apply the observer to every section with the fade-in class
+  document.querySelectorAll('.fade-in-section').forEach(section => {
+    observer.observe(section);
+  });
+</script>
